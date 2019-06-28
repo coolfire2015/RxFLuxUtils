@@ -30,6 +30,8 @@ public class ActivityUtils {
         if (fragmentNew.isAdded()) {
             return;
         }
+        //新添加的Fragment的名字，作为Tag使用
+        String fragmentNewName = fragmentNew.getClass().getSimpleName();
         //1:管理fragment队列
         //2:管理fragment事务回退栈
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -42,13 +44,12 @@ public class ActivityUtils {
             //添加fragment供FragmentManager管理时
             //onAttach(Context),onCreate(Bundle)和onCreateView(...)方法会被调用
             fragmentManager.beginTransaction()
-                    .add(contentId, fragmentNew)
+                    .add(contentId, fragmentNew, fragmentNewName)
                     .commit();
             return;
         }
         //存在旧的Fragment
         String fragmentName = fragment.getClass().getSimpleName();
-        String fragmentNewName = fragmentNew.getClass().getSimpleName();
         //旧的Fragment和新的Fragment同为同一个Fragment的实例对象
         if (TextUtils.equals(fragmentName, fragmentNewName)) {
             return;
@@ -59,12 +60,12 @@ public class ActivityUtils {
             fragmentManager.beginTransaction()
                     .addToBackStack(fragment.getClass().getName())
                     .hide(fragment)
-                    .add(contentId, fragmentNew)
+                    .add(contentId, fragmentNew, fragmentNewName)
                     .commit();
 
         } else {//替换已经存在的Fragment
             fragmentManager.beginTransaction()
-                    .replace(contentId, fragmentNew)
+                    .replace(contentId, fragmentNew, fragmentNewName)
                     .commit();
         }
     }
