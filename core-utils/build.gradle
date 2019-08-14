@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = "com.github.coolfire2015"
@@ -25,10 +28,36 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    //Lambda表达式需要
+    //lint设置
+    lintOptions {
+        //lint 不被终止
+        abortOnError false
+        //打Release版本时,不进行检测
+        checkReleaseBuilds false
+        //关闭检索的功能
+        disable 'GoogleAppIndexingWarning'
+    }
+    //数据绑定
+    dataBinding {
+        enabled = true
+    }
+    //Dex分包
+    dexOptions {
+        jumboMode = true
+        javaMaxHeapSize "4g"//增加java堆内存大小
+    }
+    //Java1.8支持
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    //Kotlin Java1.8支持
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+    //Kotlin 实验功能
+    androidExtensions {
+        experimental = true
     }
 }
 
@@ -43,10 +72,22 @@ artifacts {
 }
 
 dependencies {
-    //Json解析
-    implementation "com.alibaba:fastjson:${FAST_JSON}"
+    //X_FRAGMENT
+    api "androidx.fragment:fragment:${X_FRAGMENT}"
+    //X-RecyclerView
+    api "androidx.recyclerview:recyclerview:${X_RECYCLE_RVIEW}"
+    //X-Navigation
+    api "androidx.navigation:navigation-ui-ktx:${X_NAVIGATION}"
+    api "androidx.navigation:navigation-fragment-ktx:${X_NAVIGATION}"
+    //RxJava
+    api "io.reactivex.rxjava2:rxjava:${RX_JAVA_2}"
     //依赖注入注解
-    implementation "javax.inject:javax.inject:${JAVAX_INJECT}"
-    //版本兼容包,使用兼容包中Fragment
-    implementation "androidx.fragment:fragment:${X_FRAGMENT}"
+    api "javax.inject:javax.inject:${JAVAX_INJECT}"
+    //Json解析
+    api "com.alibaba:fastjson:${FAST_JSON}"
+    api "com.google.code.gson:gson:${GSON}"
+    //OkHttp
+    api "com.squareup.okhttp3:okhttp:${OKHTTP}"
+    //Retrofit
+    api "com.squareup.retrofit2:retrofit:${RETROFIT}"
 }
