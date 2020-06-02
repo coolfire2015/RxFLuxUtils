@@ -80,7 +80,7 @@ dependencies {
     api "androidx.navigation:navigation-ui-ktx:${X_NAVIGATION}"
     api "androidx.navigation:navigation-fragment-ktx:${X_NAVIGATION}"
     //RxJava
-    api "io.reactivex.rxjava2:rxjava:${RX_JAVA_2}"
+    api "io.reactivex.rxjava3:rxjava:${RX_JAVA_3}"
     //依赖注入注解
     api "javax.inject:javax.inject:${JAVAX_INJECT}"
     //Json解析
